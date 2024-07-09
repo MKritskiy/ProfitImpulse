@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Users.API.DtoMappers;
 using Users.API.Exceptions;
 using Users.API.Models;
 using Users.API.Repositories;
 using Users.API.Services.Dto;
 using Users.API.Services.Encrypt;
+using Users.API.Services.General;
 using Users.API.Services.Token;
 
 namespace Users.API.Services.UserService
@@ -41,27 +43,24 @@ namespace Users.API.Services.UserService
 
         public async Task<AfterAuthenticationDto> Register(RegisterDto registerDto)
         {
+            User user = RegisterMapper.MapRegisterDtoToUser(registerDto);
 
-            User user = new User();
+            using (var scope = Helpers.CreateTransactionScope())
+            {
+                await ValidateNewUser(user);
+                int id = await SaveNewUserAsync(user);
+                var token = _tokenGenerator.GenerateToken(user);
+                scope.Complete();
 
-            user.Username = registerDto.Username;
-
-            user.Email = registerDto.Email;
-
-            await ValidateEmail(user.Email);
-            await ValidateLogin(user.Username);
-
-            user.Salt = Guid.NewGuid().ToString();
-            user.PasswordHash = _encrypt.HashPassword(registerDto.Password, user.Salt);
-
-            int id = await _userRepository.CreateUserAsync(user);
-
-            var token = _tokenGenerator.GenerateToken(user);
-
-            return new AfterAuthenticationDto { Token = token, Id = id };
-
+                return new AfterAuthenticationDto { Token = token, Id = id };
+            }
         }
         
+        private async Task ValidateNewUser(User user)
+        {
+            await ValidateEmail(user.Email);
+            await ValidateLogin(user.Username);
+        }
 
         private async Task ValidateLogin(string username)
         {
@@ -76,5 +75,14 @@ namespace Users.API.Services.UserService
             if (user != null)
                 throw new DuplicateEmailException();
         }
+
+        private async Task<int> SaveNewUserAsync(User user)
+        {
+            user.Salt = Helpers.GenerateSalt();
+            user.PasswordHash = _encrypt.HashPassword(user.PasswordHash, user.Salt);
+            return await _userRepository.CreateUserAsync(user);
+        }
+
+
     }
 }
