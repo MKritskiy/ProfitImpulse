@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Users.API.Dto;
 using Users.API.DtoMappers;
 using Users.API.Exceptions;
 using Users.API.Models;
 using Users.API.Repositories;
-using Users.API.Services.Dto;
 using Users.API.Services.Encrypt;
 using Users.API.Services.General;
 using Users.API.Services.Token;

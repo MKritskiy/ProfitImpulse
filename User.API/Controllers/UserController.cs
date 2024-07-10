@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Users.API.Dto;
 using Users.API.Exceptions;
-using Users.API.Services.Dto;
 using Users.API.Services.UserService;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 

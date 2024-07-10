@@ -1,5 +1,5 @@
-﻿using Users.API.Models;
-using Users.API.Services.Dto;
+﻿using Users.API.Dto;
+using Users.API.Models;
 
 namespace Users.API.DtoMappers
 {
