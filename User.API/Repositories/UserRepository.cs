@@ -13,7 +13,7 @@ namespace Users.API.Repositories
             string sql = @"INSERT INTO Users (email, username, password_hash, salt)
                         VALUES (@Email, @Username, @PasswordHash, @Salt)
                         RETURNING user_id";
-            return await DbHelper.QueryScalarAsync<int>(sql, user);
+            return await DbHelper.QueryFirstOrDefaultAsync<int>(sql, user);
         }
 
         public async Task<bool> DeleteUserAsync(int userId)

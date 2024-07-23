@@ -1,7 +1,7 @@
 ﻿using Dapper;
 using Npgsql;
 
-namespace Users.API.Database
+namespace Inventories.API.Database
 {
     public class DbHelper
     {
