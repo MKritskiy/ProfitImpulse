@@ -1,3 +1,4 @@
+using ApiGateway.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Ocelot.DependencyInjection;
@@ -30,6 +31,7 @@ var app = builder.Build();
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseMiddleware<IPWhitelistMiddleware>();
 await app.UseOcelot();
 
 

@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace Inventories.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
     public class StocksControllerr : ControllerBase
     {
         private readonly IStockService _stockService;
@@ -18,7 +17,20 @@ namespace Inventories.API.Controllers
         [HttpGet("{profileid}")]
         public async Task<IActionResult> Index(int profileid)
         {
-            var stocks = await _stockService.GetStocksAsync(profileid);
+            var jwtToken = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+
+            if (string.IsNullOrEmpty(jwtToken))
+            {
+                return Unauthorized("Missing or invalid token.");
+            }
+
+            var stocks = await _stockService.GetStocksAsync(profileid, jwtToken);
+
+            if (stocks == null || !stocks.Any())
+            {
+                return NotFound("Stocks not found.");
+            }
+
             return Ok(stocks);
         }
     }

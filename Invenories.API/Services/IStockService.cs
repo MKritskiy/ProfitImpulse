@@ -4,6 +4,6 @@ namespace Inventories.API.Services
 {
     public interface IStockService
     {
-        Task<IEnumerable<Stock>> GetStocksAsync(int profileid);
+        Task<IEnumerable<Stock>> GetStocksAsync(int profileid, string jwtToken);
     }
 }

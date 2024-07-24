@@ -39,14 +39,14 @@ namespace Inventories.API.Repositories
 
         public async Task<bool> DeleteStockAsync(int id)
         {
-            const string query = "DELETE FROM Stocks WHERE stock_id = @Id";
-            int rowsAffected = await DbHelper.ExecuteAsync(query, new { Id = id });
+            const string query = "DELETE FROM Stocks WHERE stock_id = @ProfileId";
+            int rowsAffected = await DbHelper.ExecuteAsync(query, new { ProfileId = id });
             return rowsAffected > 0;
         }
 
         public async Task<int> DeleteStocksByProfileAsync(int profileid)
         {
-            const string query = "DELETE FROM Stocks WHERE profile_id = @Id";
+            const string query = "DELETE FROM Stocks WHERE profile_id = @ProfileId";
             int rowsAffected = await DbHelper.ExecuteAsync(query, new { ProfileId = profileid });
             return rowsAffected;
         }

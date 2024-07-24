@@ -1,3 +1,7 @@
+DROP SCHEMA public CASCADE;
+CREATE SCHEMA public;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO public;
 CREATE TABLE IF NOT EXISTS Users (
     user_id SERIAL PRIMARY KEY,
     email VARCHAR(255) NOT NULL UNIQUE,
@@ -10,7 +14,7 @@ CREATE TABLE IF NOT EXISTS Profiles (
     profile_id SERIAL PRIMARY KEY,
     user_id INT NOT NULL,
     profile_name VARCHAR(255) NOT NULL,
-    api_key VARCHAR(255) NOT NULL,
+    api_key TEXT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
 
@@ -34,6 +38,16 @@ CREATE TABLE IF NOT EXISTS Stocks (
     FOREIGN KEY (profile_id) REFERENCES Profiles(profile_id)
 );
 
+CREATE TABLE IF NOT EXISTS StockUpdates (
+    update_id SERIAL PRIMARY KEY,
+    profile_id INT NOT NULL,
+    last_update TIMESTAMP NOT NULL,
+    lifetime_minutes INT NOT NULL,
+    date_from DATE NOT NULL,
+    FOREIGN KEY (profile_id) REFERENCES Profiles(profile_id)
+);
+
+
 CREATE TABLE IF NOT EXISTS Orders (
     order_id SERIAL PRIMARY KEY,
     profile_id INT NOT NULL,
@@ -51,6 +65,8 @@ CREATE TABLE IF NOT EXISTS Orders (
     lifetime_minutes INT NULL,
     FOREIGN KEY (profile_id) REFERENCES Profiles(profile_id)
 );
+
+
 
 CREATE TABLE IF NOT EXISTS Purchases (
     purchase_id SERIAL PRIMARY KEY,
