@@ -16,7 +16,7 @@ namespace Profiles.API.Repositories
         public async Task<bool> DeleteProfileByIdAsync(int profileid)
         {
             const string query = "DELETE FROM Profiles WHERE profile_id = @ProfileId";
-            int affectedRows = await DbHelper.ExecuteAsync(query, new {ProfileId = profileid });
+            int affectedRows = await DbHelper.ExecuteAsync(query, new { ProfileId = profileid });
             return affectedRows > 0;
         }
 

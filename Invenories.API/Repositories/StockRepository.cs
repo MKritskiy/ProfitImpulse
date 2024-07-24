@@ -52,5 +52,5 @@ namespace Inventories.API.Repositories
         }
     }
 
-    
+
 }

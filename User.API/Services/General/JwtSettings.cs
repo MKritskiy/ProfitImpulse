@@ -3,7 +3,7 @@
     public class JwtSettings
     {
         public string Issuer { get; }
-        public string Audience { get; } 
+        public string Audience { get; }
         public string Key { get; }
         public DateTime TokenLifetime { get; }
 

@@ -8,7 +8,7 @@ namespace Users.API.Repositories
         Task<User?> GetUserByNameOrEmailAsync(string nameOrEmail);
         Task<User?> GetUserByNameAsync(string username);
         Task<User?> GetUserByEmailAsync(string email);
-        Task<int> CreateUserAsync(User user); 
+        Task<int> CreateUserAsync(User user);
         Task<bool> UpdateUserAsync(User user);
         Task<bool> DeleteUserAsync(int userId);
     }

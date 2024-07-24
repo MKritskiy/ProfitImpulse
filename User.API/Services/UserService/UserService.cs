@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Users.API.Dto;
+﻿using Users.API.Dto;
 using Users.API.DtoMappers;
 using Users.API.Exceptions;
 using Users.API.Models;
@@ -55,7 +54,7 @@ namespace Users.API.Services.UserService
                 return new AfterAuthenticationDto { Token = token, Id = id };
             }
         }
-        
+
         private async Task ValidateNewUser(User user)
         {
             await ValidateEmail(user.Email);

@@ -1,0 +1,39 @@
+version: '3.4'
+
+services:
+  apigateway:
+    image: ${DOCKER_REGISTRY-}apigateway
+    build:
+      context: .
+      dockerfile: ApiGateway/Dockerfile
+    ports:
+      - 53200:8080
+
+  users.api:
+    image: ${DOCKER_REGISTRY-}usersapi
+    build:
+      context: .
+      dockerfile: User.API/Dockerfile
+  
+  postgres-test:
+    image: postgres
+    restart: always
+    ports: 
+        - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: homyak
+      POSTGRES_DB: ProfitImpulseDB
+      POSTGRES_USER: postgres
+  profiles.api:
+    image: ${DOCKER_REGISTRY-}profilesapi
+    build:
+      context: .
+      dockerfile: Profiles.API/Dockerfile
+
+
+  inventories.api:
+    image: ${DOCKER_REGISTRY-}inventoriesapi
+    build:
+      context: .
+      dockerfile: Invenories.API/Dockerfile
+

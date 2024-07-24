@@ -1,5 +1,4 @@
 ﻿using Microsoft.IdentityModel.Tokens;
-using Microsoft.VisualBasic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -20,8 +19,8 @@ namespace Users.API.Services.Token
         public string GenerateToken(User user)
         {
             var claims = new List<Claim>
-            { 
-                new Claim(ClaimTypes.SerialNumber, user.UserId.ToString()) 
+            {
+                new Claim(ClaimTypes.SerialNumber, user.UserId.ToString())
             };
 
             var creds = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key)), SecurityAlgorithms.HmacSha256);

@@ -2,10 +2,8 @@
 using Inventories.API.Models;
 using Inventories.API.Repositories;
 using Microsoft.Net.Http.Headers;
-using System;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Inventories.API.Services
 {
@@ -26,8 +24,8 @@ namespace Inventories.API.Services
         {
             var stocks = await _stockRepository.GetAllStocksAsync(profileid);
             var latestUpdate = await _stockUpdateRepository.GetLatestUpdateAsync(profileid);
-            
-            if (stocks == null || !stocks.Any() || isDataExpired(latestUpdate)) 
+
+            if (stocks == null || !stocks.Any() || isDataExpired(latestUpdate))
             {
                 stocks = await FetchStocksFromApi(profileid, jwtToken);
                 await SaveStocks(stocks, profileid);
@@ -113,9 +111,9 @@ namespace Inventories.API.Services
             await _stockRepository.DeleteStocksByProfileAsync(profileid);
             await _stockUpdateRepository.DeleteStockUpdatesByProfileAsync(profileid);
             // Add new stocks
-            foreach ( var stock in stocks)
+            foreach (var stock in stocks)
             {
-                stock.StockId = await _stockRepository.AddStockAsync(stock); 
+                stock.StockId = await _stockRepository.AddStockAsync(stock);
             }
 
             // Create StockUpdate
@@ -126,7 +124,7 @@ namespace Inventories.API.Services
                 LifetimeMinutes = 30,
                 DateFrom = new DateTime(2019, 6, 20)
             };
-            
+
             await _stockUpdateRepository.AddStockUpdateAsync(stockUpdate);
         }
     }

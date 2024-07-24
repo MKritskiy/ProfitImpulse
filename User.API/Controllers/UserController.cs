@@ -2,7 +2,6 @@
 using Users.API.Dto;
 using Users.API.Exceptions;
 using Users.API.Services.UserService;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Users.API.Controllers
 {

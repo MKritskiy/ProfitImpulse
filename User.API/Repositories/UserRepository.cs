@@ -1,6 +1,4 @@
-﻿using Dapper;
-using System.Data;
-using Users.API.Database;
+﻿using Users.API.Database;
 using Users.API.Models;
 
 namespace Users.API.Repositories
@@ -19,7 +17,7 @@ namespace Users.API.Repositories
         public async Task<bool> DeleteUserAsync(int userId)
         {
             string sql = "DELETE FROM Users WHERE user_id = @UserId";
-            var affectedRwos = await DbHelper.ExecuteAsync(sql, new {UserId = userId});
+            var affectedRwos = await DbHelper.ExecuteAsync(sql, new { UserId = userId });
             return affectedRwos > 0;
         }
 
@@ -36,7 +34,7 @@ namespace Users.API.Repositories
             string sql = @"SELECT * 
                            FROM Users 
                            WHERE user_id=@UserId";
-            return await DbHelper.QueryFirstOrDefaultAsync<User>(sql, new {UserId=userid}) ?? null;
+            return await DbHelper.QueryFirstOrDefaultAsync<User>(sql, new { UserId = userid }) ?? null;
         }
 
         public async Task<User?> GetUserByNameAsync(string username)

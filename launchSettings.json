@@ -1,0 +1,17 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "composeLaunchAction": "None",
+      "composeLaunchServiceName": "apigateway",
+      "serviceActions": {
+        "postgres-test": "StartWithoutDebugging",
+        "apigateway": "StartDebugging",
+        "inventories.api": "StartDebugging",
+        "users.api": "StartDebugging",
+        "profiles.api": "StartDebugging"
+      }
+    }
+  }
+}

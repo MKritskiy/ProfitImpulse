@@ -10,8 +10,8 @@
       },
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5242
+          "Host": "users.api",
+          "Port": 8080
         }
       ],
       "DownstreamPathTemplate": "/test",
@@ -22,8 +22,8 @@
     {
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5242
+          "Host": "users.api",
+          "Port": 8080
         }
       ],
       "DownstreamPathTemplate": "/{endpoint}",
@@ -40,8 +40,8 @@
       },
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5234
+          "Host": "profiles.api",
+          "Port": 8080
         }
       ],
       "DownstreamPathTemplate": "/{endpoint}",
@@ -58,8 +58,8 @@
       },
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5258
+          "Host": "inventories.api",
+          "Port": 8080
         }
       ],
       "DownstreamPathTemplate": "/{endpoint}",
