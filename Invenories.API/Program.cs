@@ -1,7 +1,6 @@
 using Inventories.API.Database;
 using Inventories.API.Repositories;
 using Inventories.API.Services;
-using Users.API.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<ConnectionStringOptions>(builder.Configuration.GetSection("ConnectionStrings"));
@@ -18,7 +17,6 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
 app.MapControllers();
 
 app.Run();

@@ -8,13 +8,16 @@ services:
       dockerfile: ApiGateway/Dockerfile
     ports:
       - 53200:8080
+    networks:
+      - mynetwork
 
   users.api:
     image: ${DOCKER_REGISTRY-}usersapi
     build:
       context: .
       dockerfile: User.API/Dockerfile
-  
+    networks:
+      - mynetwork
   postgres-test:
     image: postgres
     restart: always
@@ -24,16 +27,34 @@ services:
       POSTGRES_PASSWORD: homyak
       POSTGRES_DB: ProfitImpulseDB
       POSTGRES_USER: postgres
+    volumes:
+      - ./init:/docker-entrypoint-initdb.d
+    networks:
+      - mynetwork
+
   profiles.api:
     image: ${DOCKER_REGISTRY-}profilesapi
     build:
       context: .
       dockerfile: Profiles.API/Dockerfile
-
+    networks:
+      - mynetwork
 
   inventories.api:
     image: ${DOCKER_REGISTRY-}inventoriesapi
     build:
       context: .
       dockerfile: Invenories.API/Dockerfile
+    networks:
+      - mynetwork
+  orders.api:
+    image: ${DOCKER_REGISTRY-}ordersapi
+    build:
+      context: .
+      dockerfile: Orders.API/Dockerfile
+    networks:
+      - mynetwork
 
+networks:
+  mynetwork:
+    driver: bridge

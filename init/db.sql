@@ -51,9 +51,9 @@ CREATE TABLE IF NOT EXISTS StockUpdates (
 CREATE TABLE IF NOT EXISTS Orders (
     order_id SERIAL PRIMARY KEY,
     profile_id INT NOT NULL,
-    order_date DATE NOT NULL,
-    order_time TIME NOT NULL,
+    order_date TIMESTAMP NOT NULL,
     order_amount DECIMAL(10, 2) NOT NULL,
+	order_quantity INT DEFAULT 1,
     order_name VARCHAR(255) NOT NULL,
     order_sku VARCHAR(255) NOT NULL,
     order_brand VARCHAR(255) NOT NULL,
@@ -61,12 +61,17 @@ CREATE TABLE IF NOT EXISTS Orders (
     order_country VARCHAR(255) NOT NULL,
     order_state VARCHAR(255) NOT NULL,
     order_region VARCHAR(255) NOT NULL,
-    last_update TIMESTAMP NOT NULL,
-    lifetime_minutes INT NULL,
     FOREIGN KEY (profile_id) REFERENCES Profiles(profile_id)
 );
 
-
+CREATE TABLE IF NOT EXISTS OrderUpdates (
+    update_id SERIAL PRIMARY KEY,
+    profile_id INT NOT NULL,
+    last_update TIMESTAMP NOT NULL,
+    lifetime_minutes INT NOT NULL,
+    date_from DATE NOT NULL,
+    FOREIGN KEY (profile_id) REFERENCES Profiles(profile_id)
+);
 
 CREATE TABLE IF NOT EXISTS Purchases (
     purchase_id SERIAL PRIMARY KEY,

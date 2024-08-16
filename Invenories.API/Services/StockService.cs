@@ -89,7 +89,7 @@ namespace Inventories.API.Services
                 if (response.IsSuccessStatusCode)
                 {
                     var result = await response.Content.ReadFromJsonAsync<JsonObject>();
-                    return result?["apikey"]?.ToString();
+                    return result?["apiKey"]?.ToString();
                 }
                 else
                 {

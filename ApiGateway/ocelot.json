@@ -66,6 +66,23 @@
       "DownstreamScheme": "http",
       "UpstreamHttpMethod": [ "POST", "GET" ],
       "UpstreamPathTemplate": "/api/inventory/{endpoint}"
+    },
+
+    {
+      "AuthenticationOptions": {
+        "AllowedScopes": [],
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "orders.api",
+          "Port": 8080
+        }
+      ],
+      "DownstreamPathTemplate": "/{endpoint}",
+      "DownstreamScheme": "http",
+      "UpstreamHttpMethod": [ "POST", "GET" ],
+      "UpstreamPathTemplate": "/api/order/{endpoint}"
     }
 
   ]

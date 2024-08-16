@@ -17,14 +17,15 @@ namespace ApiGateway.Middlewares
 
         public async Task InvokeAsync(HttpContext context)
         {
-            var remoteIp = context.Connection.RemoteIpAddress?.ToString();
-            if (remoteIp != null && !_whitelistedIPs.Contains(remoteIp))
-            {
-                _logger.LogWarning($"Forbidden request from IP: {remoteIp}");
-                context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
-                await context.Response.WriteAsync("Forbidden");
-                return;
-            }
+            //Заглушка!!! Потом убрать!!!
+            //var remoteIp = context.Connection.RemoteIpAddress?.ToString();
+            //if (remoteIp != null && !_whitelistedIPs.Contains(remoteIp))
+            //{
+            //    _logger.LogWarning($"Forbidden request from IP: {remoteIp}");
+            //    context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+            //    await context.Response.WriteAsync("Forbidden");
+            //    return;
+            //}
 
             await _next(context);
         }

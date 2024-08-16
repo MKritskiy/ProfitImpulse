@@ -1,4 +1,4 @@
-﻿namespace Inventories.API.Database
+﻿namespace Orders.API.Database
 {
     public class ConnectionStringOptions
     {
