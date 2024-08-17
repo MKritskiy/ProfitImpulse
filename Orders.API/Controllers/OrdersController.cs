@@ -2,19 +2,19 @@
 using Orders.API.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Inventories.API.Controllers
+namespace Orders.API.Controllers
 {
     [ApiController]
-    public class OrdersControllerr : ControllerBase
+    public class OrdersController : ControllerBase
     {
         private readonly IOrderService _OrderService;
 
-        public OrdersControllerr(IOrderService OrderService)
+        public OrdersController(IOrderService OrderService)
         {
             _OrderService = OrderService;
         }
 
-        [HttpGet("{profileid}")]
+        [HttpGet("orders/{profileid}")]
         public async Task<IActionResult> Index(int profileid)
         {
             var jwtToken = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();

@@ -76,9 +76,9 @@ CREATE TABLE IF NOT EXISTS OrderUpdates (
 CREATE TABLE IF NOT EXISTS Purchases (
     purchase_id SERIAL PRIMARY KEY,
     profile_id INT NOT NULL,
-    purchase_date DATE NOT NULL,
-    purchase_time TIME NOT NULL,
+    purchase_date TIMESTAMP NOT NULL,
     purchase_amount DECIMAL(10, 2) NOT NULL,
+	purchase_quantity INT DEFAULT 1,
     purchase_name VARCHAR(255) NOT NULL,
     purchase_sku VARCHAR(255) NOT NULL,
     purchase_brand VARCHAR(255) NOT NULL,
@@ -86,8 +86,15 @@ CREATE TABLE IF NOT EXISTS Purchases (
     purchase_country VARCHAR(255) NOT NULL,
     purchase_state VARCHAR(255) NOT NULL,
     purchase_region VARCHAR(255) NOT NULL,
+    FOREIGN KEY (profile_id) REFERENCES Profiles(profile_id)
+);
+
+CREATE TABLE IF NOT EXISTS PurchaseUpdates (
+    update_id SERIAL PRIMARY KEY,
+    profile_id INT NOT NULL,
     last_update TIMESTAMP NOT NULL,
-    lifetime_minutes INT NULL,
+    lifetime_minutes INT NOT NULL,
+    date_from DATE NOT NULL,
     FOREIGN KEY (profile_id) REFERENCES Profiles(profile_id)
 );
 

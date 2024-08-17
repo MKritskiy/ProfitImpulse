@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace Inventories.API.Controllers
 {
     [ApiController]
-    public class StocksControllerr : ControllerBase
+    public class StocksController : ControllerBase
     {
         private readonly IStockService _stockService;
 
-        public StocksControllerr(IStockService stockService)
+        public StocksController(IStockService stockService)
         {
             _stockService = stockService;
         }

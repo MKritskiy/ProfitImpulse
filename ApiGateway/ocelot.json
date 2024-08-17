@@ -79,10 +79,27 @@
           "Port": 8080
         }
       ],
-      "DownstreamPathTemplate": "/{endpoint}",
+      "DownstreamPathTemplate": "/orders/{profileid}",
       "DownstreamScheme": "http",
       "UpstreamHttpMethod": [ "POST", "GET" ],
-      "UpstreamPathTemplate": "/api/order/{endpoint}"
+      "UpstreamPathTemplate": "/api/order/{profileid}"
+    },
+
+    {
+      "AuthenticationOptions": {
+        "AllowedScopes": [],
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "purchases.api",
+          "Port": 8080
+        }
+      ],
+      "DownstreamPathTemplate": "/purchases/{profileid}",
+      "DownstreamScheme": "http",
+      "UpstreamHttpMethod": [ "POST", "GET" ],
+      "UpstreamPathTemplate": "/api/purchase/{profileid}"
     }
 
   ]
