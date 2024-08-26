@@ -1,4 +1,4 @@
-﻿namespace Orders.API.Services.Helpers
+﻿namespace Helpers
 {
     public class HelperConstants
     {

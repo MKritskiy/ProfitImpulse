@@ -1,6 +1,4 @@
-﻿using Orders.API.Models;
-
-namespace Orders.API.Services.Helpers
+﻿namespace Helpers
 {
     public interface IRequestApiHelper
     {

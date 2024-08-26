@@ -1,4 +1,4 @@
-﻿using Inventories.API.Database;
+﻿using Helpers.Database;
 using Inventories.API.Models;
 
 namespace Inventories.API.Repositories

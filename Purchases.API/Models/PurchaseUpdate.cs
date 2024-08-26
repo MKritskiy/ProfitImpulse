@@ -1,6 +1,8 @@
-﻿namespace Purchases.API.Models
+﻿using Helpers.Interfaces;
+
+namespace Purchases.API.Models
 {
-    public class PurchaseUpdate
+    public class PurchaseUpdate : IUpdate
     {
         public int UpdateId { get; set; }
         public int ProfileId { get; set; }

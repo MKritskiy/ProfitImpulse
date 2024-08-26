@@ -1,4 +1,5 @@
-using Inventories.API.Database;
+using Helpers;
+using Helpers.Database;
 using Inventories.API.Repositories;
 using Inventories.API.Services;
 
@@ -11,6 +12,10 @@ builder.Services.AddScoped<IStockRepository, StockRepository>();
 
 builder.Services.AddScoped<IStockService, StockService>();
 builder.Services.AddScoped<IStockUpdateRepository, StockUpdateRepository>();
+builder.Services.AddScoped<IRequestApiHelper, RequestApiHelper>();
+
+
+
 builder.Services.AddHttpClient();
 builder.Services.AddControllers();
 

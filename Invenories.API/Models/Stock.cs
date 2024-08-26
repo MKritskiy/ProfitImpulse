@@ -8,7 +8,5 @@
         public int ProductQuantity { get; set; }
         public string? ProductName { get; set; }
         public string? ProductSku { get; set; }
-        public DateTime LastUpdate { get; set; }
-        public int? LifetimeMinutes { get; set; }
     }
 }

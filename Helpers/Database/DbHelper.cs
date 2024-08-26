@@ -1,7 +1,8 @@
 ﻿using Dapper;
+using Microsoft.Extensions.Configuration;
 using Npgsql;
 
-namespace Orders.API.Database
+namespace Helpers.Database
 {
     public class DbHelper
     {

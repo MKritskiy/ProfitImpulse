@@ -1,11 +1,10 @@
-using Orders.API.Database;
-using Orders.API.Dto;
-using Orders.API.Models;
+using Helpers.Database;
 using Orders.API.Repositories;
 using Orders.API.Services;
-using Orders.API.Services.Helpers;
+using Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
+
 builder.Services.Configure<ConnectionStringOptions>(builder.Configuration.GetSection("ConnectionStrings"));
 DbHelper.Initialize(builder.Configuration);
 

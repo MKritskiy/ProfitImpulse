@@ -1,4 +1,4 @@
-﻿using Purchases.API.Database;
+﻿using Helpers.Database;
 using Purchases.API.Models;
 
 namespace Purchases.API.Repositories

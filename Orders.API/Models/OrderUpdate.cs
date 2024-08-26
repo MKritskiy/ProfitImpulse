@@ -1,6 +1,7 @@
-﻿namespace Orders.API.Models
+﻿using Helpers.Interfaces;
+namespace Orders.API.Models
 {
-    public class OrderUpdate
+    public class OrderUpdate : IUpdate
     {
         public int UpdateId { get; set; }
         public int ProfileId { get; set; }

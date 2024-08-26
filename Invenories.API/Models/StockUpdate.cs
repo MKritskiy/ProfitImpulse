@@ -1,6 +1,8 @@
-﻿namespace Inventories.API.Models
+﻿using Helpers.Interfaces;
+
+namespace Inventories.API.Models
 {
-    public class StockUpdate
+    public class StockUpdate : IUpdate
     {
         public int UpdateId { get; set; }
         public int ProfileId { get; set; }

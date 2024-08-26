@@ -11,9 +11,9 @@ namespace Users.API.Services.Token
     {
         private JwtSettings _jwtSettings;
 
-        public TokenGenerator(IConfiguration configuration)
+        public TokenGenerator(JwtSettings jwtSettings)
         {
-            _jwtSettings = new JwtSettings(configuration);
+            _jwtSettings = jwtSettings;
         }
 
         public string GenerateToken(User user)
@@ -29,7 +29,7 @@ namespace Users.API.Services.Token
                 issuer: _jwtSettings.Issuer,
                 audience: _jwtSettings.Audience,
                 claims: claims,
-                expires: _jwtSettings.TokenLifetime,
+                expires: DateTime.Now.AddMinutes(_jwtSettings.TokenLifetimeMinutes),
                 signingCredentials: creds
             );
 

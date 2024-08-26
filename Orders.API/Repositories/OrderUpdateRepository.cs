@@ -1,4 +1,4 @@
-﻿using Orders.API.Database;
+﻿using Helpers.Database;
 using Orders.API.Models;
 
 namespace Orders.API.Repositories

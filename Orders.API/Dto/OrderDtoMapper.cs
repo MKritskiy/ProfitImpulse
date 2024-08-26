@@ -33,10 +33,5 @@ namespace Orders.API.Dto
                     OrderQuantity = group.Count()
                 });
         }
-
-        public static Order MapDtoToModel(ApiOrder dto)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

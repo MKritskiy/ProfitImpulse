@@ -33,8 +33,6 @@ CREATE TABLE IF NOT EXISTS Stocks (
     product_quantity INT NOT NULL,
     product_name VARCHAR(255) NOT NULL,
     product_sku VARCHAR(255) NOT NULL,
-    last_update TIMESTAMP NOT NULL,
-    lifetime_minutes INT NULL,
     FOREIGN KEY (profile_id) REFERENCES Profiles(profile_id)
 );
 

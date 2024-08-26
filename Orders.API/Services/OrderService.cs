@@ -5,7 +5,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using Orders.API.Dto;
 using System.Collections.Immutable;
-using Orders.API.Services.Helpers;
+using Helpers;
 
 
 namespace Orders.API.Services
@@ -14,47 +14,38 @@ namespace Orders.API.Services
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IOrderUpdateRepository _orderUpdateRepository;
-        private readonly IHttpClientFactory _httpClientFactory;
         private readonly IRequestApiHelper _requestApiHelper;
 
-        public OrderService(IOrderRepository orderRepository, IOrderUpdateRepository orderUpdateRepository, 
-                            IHttpClientFactory httpClientFactory, IRequestApiHelper requestApiHelper)
+        public OrderService(IOrderRepository orderRepository, IOrderUpdateRepository orderUpdateRepository, IRequestApiHelper requestApiHelper)
         {
             _orderRepository = orderRepository;
             _orderUpdateRepository = orderUpdateRepository;
-            _httpClientFactory = httpClientFactory;
             _requestApiHelper = requestApiHelper;
         }
 
         public async Task<IEnumerable<Order>> GetOrdersAsync(int profileid, string jwtToken)
         {
             // Get from database
-            var Orders = await _orderRepository.GetAllOrdersAsync(profileid);
+            var orders = await _orderRepository.GetAllOrdersAsync(profileid);
             var latestUpdate = await _orderUpdateRepository.GetLatestUpdateAsync(profileid);
 
-            if (Orders == null || !Orders.Any() || isDataExpired(latestUpdate))
+            if (orders == null || !orders.Any() || CheckDataHelper.IsDataExpired(latestUpdate))
             {
                 // Get from api
                 var apiOrders = await _requestApiHelper.FetchListFromApi<ApiOrder>(OrderConstants.OrdersQuery, profileid, jwtToken);
 
                 // Map dto to model with counting of repeated elements
-                Orders = OrderDtoMapper.MapDtoListToModelList(apiOrders);
+                orders = OrderDtoMapper.MapDtoListToModelList(apiOrders);
 
 
                 // Save in database
-                await SaveOrders(Orders, profileid);
-                Orders = await _orderRepository.GetAllOrdersAsync(profileid);
+                await SaveOrders(orders, profileid);
+                orders = await _orderRepository.GetAllOrdersAsync(profileid);
             }
 
-            return Orders;
+            return orders;
         }
 
-        private bool isDataExpired(OrderUpdate latestUpdate)
-        {
-            if (latestUpdate.UpdateId < 0)
-                return true;
-            return DateTime.UtcNow > latestUpdate.LastUpdate.AddMinutes(latestUpdate.LifetimeMinutes);
-        }
 
         private async Task SaveOrders(IEnumerable<Order> Orders, int profileid)
         {

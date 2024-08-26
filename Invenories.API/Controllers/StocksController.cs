@@ -14,7 +14,7 @@ namespace Inventories.API.Controllers
             _stockService = stockService;
         }
 
-        [HttpGet("{profileid}")]
+        [HttpGet("inventories/{profileid}")]
         public async Task<IActionResult> Index(int profileid)
         {
             var jwtToken = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();

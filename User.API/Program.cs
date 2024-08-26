@@ -1,14 +1,18 @@
+using Microsoft.Extensions.Options;
 using Users.API.Database;
 using Users.API.Services.General;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
-builder.Configuration.AddJsonFile("appsettings.json");
+var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
+if (jwtSettings == null)
+{
+    throw new InvalidOperationException("JwtSettings section is missing or not configured correctly.");
+}
+builder.Services.AddSingleton(jwtSettings);
 
 
-
-builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 builder.Services.Configure<ConnectionStringOptions>(builder.Configuration.GetSection("ConnectionStrings"));
 
 builder.Services.AddControllers();

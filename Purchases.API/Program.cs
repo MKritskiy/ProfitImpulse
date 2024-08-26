@@ -1,4 +1,5 @@
-using Purchases.API.Database;
+using Helpers;
+using Helpers.Database;
 using Purchases.API.Repositories;
 using Purchases.API.Services;
 
@@ -10,6 +11,9 @@ builder.Services.AddScoped<IPurchaseRepository, PurchaseRepository>();
 
 builder.Services.AddScoped<IPurchaseService, PurchaseService>();
 builder.Services.AddScoped<IPurchaseUpdateRepository, PurchaseUpdateRepository>();
+builder.Services.AddScoped<IRequestApiHelper, RequestApiHelper>();
+
+
 builder.Services.AddHttpClient();
 builder.Services.AddControllers();
 

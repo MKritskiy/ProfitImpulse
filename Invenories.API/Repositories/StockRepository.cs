@@ -1,4 +1,4 @@
-﻿using Inventories.API.Database;
+﻿using Helpers.Database;
 using Inventories.API.Models;
 
 namespace Inventories.API.Repositories
@@ -20,8 +20,8 @@ namespace Inventories.API.Repositories
         public async Task<int> AddStockAsync(Stock stock)
         {
             const string query = @"
-            INSERT INTO Stocks (profile_id, warehouse_name, product_quantity, product_name, product_sku, last_update, lifetime_minutes) 
-            VALUES (@ProfileId, @WarehouseName, @ProductQuantity, @ProductName, @ProductSku, @LastUpdate, @LifetimeMinutes)
+            INSERT INTO Stocks (profile_id, warehouse_name, product_quantity, product_name, product_sku) 
+            VALUES (@ProfileId, @WarehouseName, @ProductQuantity, @ProductName, @ProductSku)
             RETURNING stock_id";
             return await DbHelper.QueryFirstOrDefaultAsync<int>(query, stock);
         }
@@ -31,7 +31,7 @@ namespace Inventories.API.Repositories
             const string query = @"
             UPDATE Stocks 
             SET profile_id = @ProfileId, warehouse_name = @WarehouseName, product_quantity = @ProductQuantity, 
-                product_name = @ProductName, product_sku = @ProductSku, last_update = @LastUpdate, lifetime_minutes = @LifetimeMinutes 
+                product_name = @ProductName, product_sku = @ProductSku
             WHERE stock_id = @StockId";
             int rowsAffected = await DbHelper.ExecuteAsync(query, stock);
             return rowsAffected > 0;

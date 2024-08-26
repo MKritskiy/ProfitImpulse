@@ -1,8 +1,8 @@
-﻿using Microsoft.Net.Http.Headers;
-using System.Text.Json.Nodes;
+﻿using System.Text.Json.Nodes;
 using System.Text.Json;
+using System.Net.Http.Json;
 
-namespace Orders.API.Services.Helpers
+namespace Helpers
 {
     public class RequestApiHelper : IRequestApiHelper
     {
@@ -24,7 +24,7 @@ namespace Orders.API.Services.Helpers
                 throw new Exception("Authorization key not found.");
 
             // Add auth key in header params
-            client.DefaultRequestHeaders.Add(HeaderNames.Authorization, authkey);
+            client.DefaultRequestHeaders.Add("Authorization", authkey);
 
             // Get apiObject from WB api
             var responce = await client.GetAsync(query);
