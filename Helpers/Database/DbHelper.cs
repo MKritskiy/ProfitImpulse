@@ -10,9 +10,8 @@ namespace Helpers.Database
 
         public static void Initialize(IConfiguration configuration)
         {
-            _connString = configuration.GetConnectionString("DefaultConnection") ?? "";
+            _connString = configuration?.GetConnectionString("DefaultConnection") ?? "";
             DefaultTypeMap.MatchNamesWithUnderscores = true;
-
         }
 
         public static async Task<int> ExecuteAsync(string sql, object model)

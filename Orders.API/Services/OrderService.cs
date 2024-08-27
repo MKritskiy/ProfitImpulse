@@ -25,25 +25,32 @@ namespace Orders.API.Services
 
         public async Task<IEnumerable<Order>> GetOrdersAsync(int profileid, string jwtToken)
         {
-            // Get from database
-            var orders = await _orderRepository.GetAllOrdersAsync(profileid);
-            var latestUpdate = await _orderUpdateRepository.GetLatestUpdateAsync(profileid);
-
-            if (orders == null || !orders.Any() || CheckDataHelper.IsDataExpired(latestUpdate))
+            try
             {
-                // Get from api
-                var apiOrders = await _requestApiHelper.FetchListFromApi<ApiOrder>(OrderConstants.OrdersQuery, profileid, jwtToken);
+                // Get from database
+                var orders = await _orderRepository.GetAllOrdersAsync(profileid);
+                var latestUpdate = await _orderUpdateRepository.GetLatestUpdateAsync(profileid);
 
-                // Map dto to model with counting of repeated elements
-                orders = OrderDtoMapper.MapDtoListToModelList(apiOrders);
+                if (orders == null || !orders.Any() || CheckDataHelper.IsDataExpired(latestUpdate))
+                {
+                    // Get from api
+                    var apiOrders = await _requestApiHelper.FetchListFromApi<ApiOrder>(OrderConstants.OrdersQuery, profileid, jwtToken);
+
+                    // Map dto to model with counting of repeated elements
+                    orders = OrderDtoMapper.MapDtoListToModelList(apiOrders);
 
 
-                // Save in database
-                await SaveOrders(orders, profileid);
-                orders = await _orderRepository.GetAllOrdersAsync(profileid);
+                    // Save in database
+                    await SaveOrders(orders, profileid);
+                    orders = await _orderRepository.GetAllOrdersAsync(profileid);
+                }
+
+                return orders;
             }
-
-            return orders;
+            catch
+            {
+                throw;
+            }
         }
 
 

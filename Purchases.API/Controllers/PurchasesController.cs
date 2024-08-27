@@ -17,21 +17,30 @@ namespace Purchases.API.Controllers
         [HttpGet("purchases/{profileid}")]
         public async Task<IActionResult> Index(int profileid)
         {
-            var jwtToken = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-
-            if (string.IsNullOrEmpty(jwtToken))
+            try
             {
-                return Unauthorized("Missing or invalid token.");
+
+                var jwtToken = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+
+                if (string.IsNullOrEmpty(jwtToken))
+                {
+                    return Unauthorized("Missing or invalid token.");
+                }
+
+                var Purchases = await _PurchaseService.GetPurchasesAsync(profileid, jwtToken);
+
+                if (Purchases == null || !Purchases.Any())
+                {
+                    return NotFound("Purchases not found.");
+                }
+
+                return Ok(Purchases);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
 
-            var Purchases = await _PurchaseService.GetPurchasesAsync(profileid, jwtToken);
-
-            if (Purchases == null || !Purchases.Any())
-            {
-                return NotFound("Purchases not found.");
-            }
-
-            return Ok(Purchases);
         }
     }
 }

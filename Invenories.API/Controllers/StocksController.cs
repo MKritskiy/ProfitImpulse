@@ -17,21 +17,28 @@ namespace Inventories.API.Controllers
         [HttpGet("inventories/{profileid}")]
         public async Task<IActionResult> Index(int profileid)
         {
-            var jwtToken = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-
-            if (string.IsNullOrEmpty(jwtToken))
+            try
             {
-                return Unauthorized("Missing or invalid token.");
+                var jwtToken = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+
+                if (string.IsNullOrEmpty(jwtToken))
+                {
+                    return Unauthorized("Missing or invalid token.");
+                }
+
+                var stocks = await _stockService.GetStocksAsync(profileid, jwtToken);
+
+                if (stocks == null || !stocks.Any())
+                {
+                    return NotFound("Stocks not found.");
+                }
+
+                return Ok(stocks);
             }
-
-            var stocks = await _stockService.GetStocksAsync(profileid, jwtToken);
-
-            if (stocks == null || !stocks.Any())
+            catch (Exception ex)
             {
-                return NotFound("Stocks not found.");
+                return BadRequest(ex.Message);
             }
-
-            return Ok(stocks);
         }
     }
 }

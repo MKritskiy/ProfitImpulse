@@ -1,4 +1,4 @@
-﻿using Users.API.Database;
+﻿using Helpers.Database;
 using Users.API.Models;
 
 namespace Users.API.Repositories

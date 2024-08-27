@@ -1,5 +1,5 @@
-﻿using Profiles.API.Models;
-using Users.API.Database;
+﻿using Helpers.Database;
+using Profiles.API.Models;
 
 namespace Profiles.API.Repositories
 {

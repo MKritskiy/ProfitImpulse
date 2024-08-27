@@ -20,20 +20,26 @@ namespace Inventories.API.Services
 
         public async Task<IEnumerable<Stock>> GetStocksAsync(int profileid, string jwtToken)
         {
-            var stocks = await _stockRepository.GetAllStocksAsync(profileid);
-            var latestUpdate = await _stockUpdateRepository.GetLatestUpdateAsync(profileid);
-
-            if (stocks == null || !stocks.Any() || CheckDataHelper.IsDataExpired(latestUpdate))
+            try
             {
-                var stocksApi = await _requestApiHelper.FetchListFromApi<ApiStock>(StockConstants.StocksQuery, profileid, jwtToken);
+                var stocks = await _stockRepository.GetAllStocksAsync(profileid);
+                var latestUpdate = await _stockUpdateRepository.GetLatestUpdateAsync(profileid);
 
-                stocks = StockDtoMapper.MapDtoListToModelList(stocksApi);
+                if (stocks == null || !stocks.Any() || CheckDataHelper.IsDataExpired(latestUpdate))
+                {
+                    var stocksApi = await _requestApiHelper.FetchListFromApi<ApiStock>(StockConstants.StocksQuery, profileid, jwtToken);
 
-                await SaveStocks(stocks, profileid);
-                stocks = await _stockRepository.GetAllStocksAsync(profileid);
+                    stocks = StockDtoMapper.MapDtoListToModelList(stocksApi);
+
+                    await SaveStocks(stocks, profileid);
+                    stocks = await _stockRepository.GetAllStocksAsync(profileid);
+                }
+
+                return stocks;
+            }catch
+            {
+                throw;
             }
-
-            return stocks;
         }
 
         private async Task SaveStocks(IEnumerable<Stock> stocks, int profileid)

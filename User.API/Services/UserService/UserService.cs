@@ -44,7 +44,7 @@ namespace Users.API.Services.UserService
         {
             User user = RegisterMapper.MapRegisterDtoToUser(registerDto);
 
-            using (var scope = Helpers.CreateTransactionScope())
+            using (var scope = General.Helpers.CreateTransactionScope())
             {
                 await ValidateNewUser(user);
                 int id = await SaveNewUserAsync(user);
@@ -55,7 +55,7 @@ namespace Users.API.Services.UserService
             }
         }
 
-        private async Task ValidateNewUser(User user)
+        public async Task ValidateNewUser(User user)
         {
             await ValidateEmail(user.Email);
             await ValidateLogin(user.Username);
@@ -75,9 +75,13 @@ namespace Users.API.Services.UserService
                 throw new DuplicateEmailException();
         }
 
-        private async Task<int> SaveNewUserAsync(User user)
+        public async Task<int> SaveNewUserAsync(User user)
         {
-            user.Salt = Helpers.GenerateSalt();
+            if (user.Username == null || user.Email == null || user.PasswordHash == null)
+            {
+                throw new InvalidOperationException("Incorrect User data");
+            } 
+            user.Salt = General.Helpers.GenerateSalt();
             user.PasswordHash = _encrypt.HashPassword(user.PasswordHash, user.Salt);
             return await _userRepository.CreateUserAsync(user);
         }

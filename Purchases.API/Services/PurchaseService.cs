@@ -20,20 +20,28 @@ namespace Purchases.API.Services
 
         public async Task<IEnumerable<Purchase>> GetPurchasesAsync(int profileid, string jwtToken)
         {
-            var purchases = await _purchaseRepository.GetAllPurchasesAsync(profileid);
-            var latestUpdate = await _purchaseUpdateRepository.GetLatestUpdateAsync(profileid);
-
-            if (purchases == null || !purchases.Any() || CheckDataHelper.IsDataExpired(latestUpdate))
+            try
             {
-                var purchaseApi = await _requestApiHelper.FetchListFromApi<ApiPurchase>(PurchaseConstants.PurchasesQuery, profileid, jwtToken);
+                var purchases = await _purchaseRepository.GetAllPurchasesAsync(profileid);
+                var latestUpdate = await _purchaseUpdateRepository.GetLatestUpdateAsync(profileid);
 
-                purchases = PurchaseDtoMapper.MapDtoListToModelList(purchaseApi);
+                if (purchases == null || !purchases.Any() || CheckDataHelper.IsDataExpired(latestUpdate))
+                {
+                    var purchaseApi = await _requestApiHelper.FetchListFromApi<ApiPurchase>(PurchaseConstants.PurchasesQuery, profileid, jwtToken);
 
-                await SavePurchases(purchases, profileid);
-                purchases = await _purchaseRepository.GetAllPurchasesAsync(profileid);
+                    purchases = PurchaseDtoMapper.MapDtoListToModelList(purchaseApi);
+
+                    await SavePurchases(purchases, profileid);
+                    purchases = await _purchaseRepository.GetAllPurchasesAsync(profileid);
+                }
+
+                return purchases;
+            }
+            catch
+            {
+                throw;
             }
 
-            return purchases;
         }
 
 

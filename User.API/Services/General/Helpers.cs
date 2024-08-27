@@ -8,7 +8,7 @@ namespace Users.API.Services.General
         {
             return Guid.NewGuid().ToString();
         }
-        public static TransactionScope CreateTransactionScope(int seconds = 1)
+        public static TransactionScope CreateTransactionScope(int seconds = 60)
         {
 
             return new TransactionScope(

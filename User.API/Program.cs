@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Options;
-using Users.API.Database;
+using Helpers.Database;
 using Users.API.Services.General;
 
 var builder = WebApplication.CreateBuilder(args);

@@ -1,6 +1,9 @@
 ﻿using Helpers;
+using Helpers.Database;
 using Inventories.API.Repositories;
 using Inventories.API.Services;
+using Microsoft.Extensions.Configuration;
+using NUnit.Framework.Internal;
 using Orders.API.Repositories;
 using Orders.API.Services;
 using Profiles.API.Repositories;
@@ -40,9 +43,18 @@ namespace ProfitImpulseTest.Helpers
         protected IOrderUpdateRepository orderUpdateRepository = new OrderUpdateRepository();
         protected IOrderService orderService;
 
+        protected IConfiguration configuration;
         JwtSettings jwtSettings;
         public BaseTest()
         {
+            Dictionary<string, string?> myConf = new Dictionary<string, string?>{
+                {"ConnectionStrings:DefaultConnection", "Host=localhost;Port=5432;Database=ProfitImpulseDB;Username=postgres;Password=homyak" }
+            };
+            configuration = new ConfigurationBuilder()
+                .AddInMemoryCollection(myConf)
+                .Build();
+            DbHelper.Initialize(configuration);
+
             jwtSettings = new JwtSettings(
                 issuer: "your_issuer",
                 audience: "your_audience",

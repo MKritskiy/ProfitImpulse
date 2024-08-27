@@ -1,6 +1,6 @@
 using Profiles.API.Repositories;
 using Profiles.API.Services;
-using Users.API.Database;
+using Helpers.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 

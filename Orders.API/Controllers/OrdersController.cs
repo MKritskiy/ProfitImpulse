@@ -17,21 +17,29 @@ namespace Orders.API.Controllers
         [HttpGet("orders/{profileid}")]
         public async Task<IActionResult> Index(int profileid)
         {
-            var jwtToken = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-
-            if (string.IsNullOrEmpty(jwtToken))
+            try
             {
-                return Unauthorized("Missing or invalid token.");
+                var jwtToken = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+
+                if (string.IsNullOrEmpty(jwtToken))
+                {
+                    return Unauthorized("Missing or invalid token.");
+                }
+
+                var Orders = await _OrderService.GetOrdersAsync(profileid, jwtToken);
+
+                if (Orders == null || !Orders.Any())
+                {
+                    return NotFound("Orders not found.");
+                }
+
+                return Ok(Orders);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
 
-            var Orders = await _OrderService.GetOrdersAsync(profileid, jwtToken);
-
-            if (Orders == null || !Orders.Any())
-            {
-                return NotFound("Orders not found.");
-            }
-
-            return Ok(Orders);
         }
     }
 }
