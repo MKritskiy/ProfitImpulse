@@ -4,6 +4,9 @@ namespace Users.API.Services.Encrypt
 {
     public class Encrypt : IEncrypt
     {
+        public Encrypt()
+        {
+        }
         public string HashPassword(string password, string salt)
         {
             return Convert.ToBase64String(KeyDerivation.Pbkdf2(

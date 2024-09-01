@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
+using Users.API.Dto;
 using Users.API.Exceptions;
 using Users.API.Models;
 
@@ -51,6 +52,44 @@ namespace ProfitImpulseTest
                 var afterAuht = await userService.Login(new Users.API.Dto.LoginDto() { NameOrEmail = "sasha1", Password = "Sasha1234" });
                 Assert.That(afterAuht.Id, Is.GreaterThan(0));
             }
+
+        }
+
+        [Test]
+        public async Task LoginTest()
+        {
+            using (var scope = Helper.CreateTransactionScope())
+            {
+                var user1 = new User()
+                {
+                    Email = "test@test.com",
+                    PasswordHash = "Sasha1234",
+                    Username = "sasha1",
+                };
+                var afterReg = await userService.SaveNewUserAsync(user1);
+                Assert.That(afterReg, Is.GreaterThan(0));
+
+                // login with email
+                var loginDto1 = new LoginDto()
+                {
+                    NameOrEmail = "test@test.com",
+                    Password = "Sasha1234"
+                };
+
+                AfterAuthenticationDto afterLogin1 = await userService.Login(loginDto1);
+                Assert.That(afterLogin1.Id, Is.GreaterThan(0));
+
+                // login with username
+                var loginDto2 = new LoginDto()
+                {
+                    NameOrEmail = "sasha1",
+                    Password = "Sasha1234"
+                };
+
+                AfterAuthenticationDto afterLogin2 = await userService.Login(loginDto2);
+                Assert.That(afterLogin2.Id, Is.GreaterThan(0));
+            }
+
         }
     }
 }

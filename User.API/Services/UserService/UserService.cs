@@ -80,7 +80,7 @@ namespace Users.API.Services.UserService
             if (user.Username == null || user.Email == null || user.PasswordHash == null)
             {
                 throw new InvalidOperationException("Incorrect User data");
-            } 
+            }
             user.Salt = General.Helpers.GenerateSalt();
             user.PasswordHash = _encrypt.HashPassword(user.PasswordHash, user.Salt);
             return await _userRepository.CreateUserAsync(user);
