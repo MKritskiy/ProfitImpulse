@@ -12,7 +12,7 @@ namespace Users.Web.Controllers
         {
             return Ok("This is a public endpoint.");
         }
-
+         
         [Authorize]
         [HttpGet("protected")]
         public IActionResult Protected()
