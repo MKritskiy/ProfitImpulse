@@ -1,70 +1,70 @@
-version: '3.4'
-
 services:
-  apigateway:
-    image: ${DOCKER_REGISTRY-}apigateway
+  notifications.web:
+    image: ${DOCKER_REGISTRY-}notificationsweb
     build:
       context: .
-      dockerfile: ApiGateway/Dockerfile
-    ports:
-      - 1746:8080
-    networks:
-      - mynetwork
-
-  users.api:
-    image: ${DOCKER_REGISTRY-}usersapi
-    build:
-      context: .
-      dockerfile: User.API/Dockerfile
-    networks:
-      - mynetwork
- 
-  postgres-test:
-    image: postgres
-    restart: always
-    ports: 
-        - 5432:5432
+      dockerfile: Notifications.RabbitMQ/Notification.Web/Dockerfile
     environment:
-      POSTGRES_PASSWORD: homyak
-      POSTGRES_DB: ProfitImpulseDB
-      POSTGRES_USER: postgres
+      - RabbitMQ__Host=rabbitmq
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    hostname: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics","-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+   
+
+
+  users.web:
+    image: ${DOCKER_REGISTRY-}usersweb
+    build:
+      context: .
+      dockerfile: User.API/User.Web/Dockerfile
+    environment:
+      - ConnectionStrings__ConnectionString=Host=users.db;Port=5432;Database=UsersDB;Username=postgres;Password=Pass1234
+      - ConnectionStrings__Redis=redis:6379,password=your_strong_password
+      - RabbitMQ__Host=rabbitmq
+    depends_on:
+      - users.db
+      - rabbitmq
+      - redis
+    ports:
+      - "50002:8080"
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
     volumes:
-      - ./init:/docker-entrypoint-initdb.d
-    networks:
-      - mynetwork
+      - redis_data:/data
+    command: redis-server --requirepass your_strong_password
 
-  profiles.api:
-    image: ${DOCKER_REGISTRY-}profilesapi
-    build:
-      context: .
-      dockerfile: Profiles.API/Dockerfile
-    networks:
-      - mynetwork
 
-  inventories.api:
-    image: ${DOCKER_REGISTRY-}inventoriesapi
-    build:
-      context: .
-      dockerfile: Invenories.API/Dockerfile
-    networks:
-      - mynetwork
+  users.db:
+    image: postgres
+    environment:
+      POSTGRES_DB: UsersDB
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Pass1234
+    ports:
+      - "5434:5432"
 
-  orders.api:
-    image: ${DOCKER_REGISTRY-}ordersapi
-    build:
-      context: .
-      dockerfile: Orders.API/Dockerfile
-    networks:
-      - mynetwork
-
-  purchases.api:
-    image: ${DOCKER_REGISTRY-}purchasesapi
-    build:
-      context: .
-      dockerfile: Purchases.API/Dockerfile
-    networks:
-      - mynetwork
-
-networks:
-  mynetwork:
-    driver: bridge
+volumes:
+  redis_data:

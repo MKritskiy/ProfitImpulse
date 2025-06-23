@@ -23,7 +23,6 @@
     <ProjectReference Include="..\Orders.API\Orders.API.csproj" />
     <ProjectReference Include="..\Profiles.API\Profiles.API.csproj" />
     <ProjectReference Include="..\Purchases.API\Purchases.API.csproj" />
-    <ProjectReference Include="..\User.API\Users.API.csproj" />
   </ItemGroup>
 
   <ItemGroup>
